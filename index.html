@@ -11,17 +11,25 @@
   </head>
   <body>
     
-    <div class="container">
-        <h1>Hangman Game</h1>
-      <div id="options-container"></div>
-      <div id="letter-container" class="letter-container hide"></div>
-      <div id="user-input-section"></div>
-      <canvas id="canvas"></canvas>
-      <div id="new-game-container" class="new-game-popup hide">
-        <div id="result-text"></div>
-        <button id="new-game-button">Дахин тоглох</button>
-      </div>
-    </div>
+    <div class="wrapper">
+      <h1>Hangman Game</h1>
+       <p>Asuultaa harj baigaad hariulaarai. Hint deer darj sedextei holbootoi asuultaa awaarai. </p>
+   </div>
+   <div class="wrapper">
+       <div id="buttons">
+       </div>  
+       <p id="catagoryName"></p>
+       <div id="hold">
+       </div>
+       <p id="mylives"></p>
+       <p id="clue">Clue -</p>  
+        <canvas id="stickman">This Text will show if the Browser does NOT support HTML5 Canvas tag</canvas>
+       <div class="container">
+         <button id="hint">Hint</button>
+         <button id="reset">Play</button>
+       </div>
+   </div>
+   
     <script src="main.js"></script>
   </body>
 </html>

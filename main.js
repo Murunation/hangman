@@ -1,221 +1,235 @@
-//Initial Ref hiij baigaa
-const letterContainer = document.getElementById("letter-container");
-const optionsContainer = document.getElementById("options-container");
-const userInputSection = document.getElementById("user-input-section");
-const newGameContainer = document.getElementById("new-game-container");
-const newGameButton = document.getElementById("new-game-button");
-const canvas = document.getElementById("canvas");
-const resultText = document.getElementById("result-text");
+window.onload = function () {
 
-//Hariultiin utguud
-let options = {
-  Жимс: [
-    "Apple",
-    "Blueberry",
-    "Orange",
-    "Pineapple",
-    "Watermelon",
-  ],
-  Амьтан: ["Dog", "Cat", "Horse", "Camel", "Sheep", "Zebra"],
-  улс: [
-    "India",
-    "America",
-    "Mongolia",
-    "Russia",
-    "China",
-  ],
-};
+  var alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h',
+        'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's',
+        't', 'u', 'v', 'w', 'x', 'y', 'z'];
+  
+  var categories;         // Array of topics
+  var chosenCategory;     // Selected catagory
+  var getHint ;          // Word getHint
+  var word ;              // Selected word
+  var guess ;             // Geuss
+  var geusses = [ ];      // Stored geusses
+  var lives ;             // Lives
+  var counter ;           // Count correct geusses
+  var space;              // Number of spaces in word '-'
 
-let winCount = 0;
-let count = 0;
+  // Get elements
+  var showLives = document.getElementById("mylives");
+  var showCatagory = document.getElementById("scatagory");
+  var getHint = document.getElementById("hint");
+  var showClue = document.getElementById("clue");
 
-let chosenWord = "";
 
-//Delgetsen deerh buttonguud
-const displayOptions = () => {
-  optionsContainer.innerHTML += `<h3>Сэдэв Сонгох</h3>`;
-  let buttonCon = document.createElement("div");
-  for (let value in options) {
-    buttonCon.innerHTML += `<button class="options" onclick="generateWord('${value}')">${value}</button>`;
-  }
-  optionsContainer.appendChild(buttonCon);
-};
 
-//Buttong block
-const blocker = () => {
-  let optionsButtons = document.querySelectorAll(".options");
-  let letterButtons = document.querySelectorAll(".letters");
-  //Songoltiig disable hiih
-  optionsButtons.forEach((button) => {
-    button.disabled = true;
-  });
+  // create alphabet ul
+  var buttons = function () {
+    myButtons = document.getElementById('buttons');
+    letters = document.createElement('ul');
 
-  //Usegnuudiig disable
-  letterButtons.forEach((button) => {
-    button.disabled.true;
-  });
-  newGameContainer.classList.remove("hide");
-};
-
-//Vg Generator hiih
-const generateWord = (optionValue) => {
-  let optionsButtons = document.querySelectorAll(".options");
-  //Button goo todruulh
-  optionsButtons.forEach((button) => {
-    if (button.innerText.toLowerCase() === optionValue) {
-      button.classList.add("active");
+    for (var i = 0; i < alphabet.length; i++) {
+      letters.id = 'alphabet';
+      list = document.createElement('li');
+      list.id = 'letter';
+      list.innerHTML = alphabet[i];
+      check();
+      myButtons.appendChild(letters);
+      letters.appendChild(list);
     }
-    button.disabled = true;
-  });
+  }
+    
+  
+  // Select Catagory
+  var selectCat = function () {
+    if (chosenCategory === categories[0]) {
+      catagoryName.innerHTML = "Premier League iin hulbumbugiin bag?";
+    } else if (chosenCategory === categories[1]) {
+      catagoryName.innerHTML = "Kino?";
+    } else if (chosenCategory === categories[2]) {
+      catagoryName.innerHTML = "Aldartai hotuud";
+    }
+  }
 
-  //Useg hide hiih
-  letterContainer.classList.remove("hide");
-  userInputSection.innerText = "";
+  // Create geusses ul
+   result = function () {
+    wordHolder = document.getElementById('hold');
+    correct = document.createElement('ul');
 
-  let optionArray = options[optionValue];
-  //Random vg songoh
-  chosenWord = optionArray[Math.floor(Math.random() * optionArray.length)];
-  chosenWord = chosenWord.toUpperCase();
-
-  //vg replace hiih 
-  let displayItem = chosenWord.replace(/./g, '<span class="dashes">_</span>');
-
-  //Display span hiih
-  userInputSection.innerHTML = displayItem;
-};
-
-//Initial Function hiij baigaa togloom shineer ehleh uyd new game button darwal
-const initializer = () => {
-  winCount = 0;
-  count = 0;
-
-  //Initial hij baigaa new game iig darwal ghdee content oo
-  userInputSection.innerHTML = "";
-  optionsContainer.innerHTML = "";
-  letterContainer.classList.add("hide");
-  newGameContainer.classList.add("hide");
-  letterContainer.innerHTML = "";
-
-  //Vseg vvsgeh button
-  for (let i = 65; i < 91; i++) {
-    let button = document.createElement("button");
-    button.classList.add("letters");
-    //Ascii toonuud [A-Z]
-    button.innerText = String.fromCharCode(i);
-    //button towchnii characters
-    button.addEventListener("click", () => {
-      let charArray = chosenWord.split("");
-      let dashes = document.getElementsByClassName("dashes");
-      //herwee array iin darsan vseg n arrayte taarch bwelzuraasiig usger solih
-      if (charArray.includes(button.innerText)) {
-        charArray.forEach((char, index) => {
-          if (char === button.innerText) {
-            dashes[index].innerText = char;
-            winCount += 1;
-            if (winCount == charArray.length) {
-              resultText.innerHTML = `<h2 class='win-msg'>Баяр хүргэе. Чи яллаа!!</h2><p>The word was <span>${chosenWord}</span></p>`;
-              blocker();
-            }
-          }
-        });
-      } else { 
-        //Hangman ee zurah
-        count += 1;
-        drawMan(count);
-        //6 tai tentsuu bol
-        if (count == 6) {
-          resultText.innerHTML = `<h2 class='lose-msg'>Уучлаарай. Чи хожигдлоо!!</h2><p>The word was <span>${chosenWord}</span></p>`;
-          blocker();
-        }
+    for (var i = 0; i < word.length; i++) {
+      correct.setAttribute('id', 'my-word');
+      guess = document.createElement('li');
+      guess.setAttribute('class', 'guess');
+      if (word[i] === "-") {
+        guess.innerHTML = "-";
+        space = 1;
+      } else {
+        guess.innerHTML = "_";
       }
-      button.disabled = true;
-    });
-    letterContainer.append(button);
+
+      geusses.push(guess);
+      wordHolder.appendChild(correct);
+      correct.appendChild(guess);
+    }
+  }
+  
+  // Show lives
+   comments = function () {
+    showLives.innerHTML = "You have " + lives + " lives";
+    if (lives < 1) {
+      showLives.innerHTML = "Game Over";
+    }
+    for (var i = 0; i < geusses.length; i++) {
+      if (counter + space === geusses.length) {
+        showLives.innerHTML = "You Win!";
+      }
+    }
   }
 
-  displayOptions();
-  let { initialDrawing } = canvasCreator();
-  initialDrawing();
-};
+      // Animate man
+  var animate = function () {
+    var drawMe = lives ;
+    drawArray[drawMe]();
+  }
 
-//Canvas
-const canvasCreator = () => {
-  let context = canvas.getContext("2d");
-  context.beginPath();
-  context.strokeStyle = "#000";
-  context.lineWidth = 2;
+  
+   // Hangman
+  canvas =  function(){
 
-  const drawLine = (fromX, fromY, toX, toY) => {
-    context.moveTo(fromX, fromY);
-    context.lineTo(toX, toY);
-    context.stroke();
-  };
-
-  const head = () => {
+    myStickman = document.getElementById("stickman");
+    context = myStickman.getContext('2d');
     context.beginPath();
-    context.arc(70, 30, 10, 0, Math.PI * 2, true);
-    context.stroke();
+    context.strokeStyle = "#fff";
+    context.lineWidth = 2;
   };
+  
+    head = function(){
+      myStickman = document.getElementById("stickman");
+      context = myStickman.getContext('2d');
+      context.beginPath();
+      context.arc(60, 25, 10, 0, Math.PI*2, true);
+      context.stroke();
+    }
+    
+  draw = function($pathFromx, $pathFromy, $pathTox, $pathToy) {
+    
+    context.moveTo($pathFromx, $pathFromy);
+    context.lineTo($pathTox, $pathToy);
+    context.stroke(); 
+}
 
-  const body = () => {
-    drawLine(70, 40, 70, 80);
-  };
+   frame1 = function() {
+     draw (0, 150, 150, 150);
+   };
+   
+   frame2 = function() {
+     draw (10, 0, 10, 600);
+   };
+  
+   frame3 = function() {
+     draw (0, 5, 70, 5);
+   };
+  
+   frame4 = function() {
+     draw (60, 5, 60, 15);
+   };
+  
+   torso = function() {
+     draw (60, 36, 60, 70);
+   };
+  
+   rightArm = function() {
+     draw (60, 46, 100, 50);
+   };
+  
+   leftArm = function() {
+     draw (60, 46, 20, 50);
+   };
+  
+   rightLeg = function() {
+     draw (60, 70, 100, 100);
+   };
+  
+   leftLeg = function() {
+     draw (60, 70, 20, 100);
+   };
+  
+  drawArray = [rightLeg, leftLeg, rightArm, leftArm,  torso,  head, frame4, frame3, frame2, frame1]; 
 
-  const leftArm = () => {
-    drawLine(70, 50, 50, 70);
-  };
 
-  const rightArm = () => {
-    drawLine(70, 50, 90, 70);
-  };
-
-  const leftLeg = () => {
-    drawLine(70, 80, 50, 110);
-  };
-
-  const rightLeg = () => {
-    drawLine(70, 80, 90, 110);
-  };
-
-  //initial frame
-  const initialDrawing = () => {
-    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    drawLine(10, 130, 130, 130);
-    drawLine(10, 10, 10, 131);
-    drawLine(10, 10, 70, 10);
-    drawLine(70, 10, 70, 20);
-  };
-
-  return { initialDrawing, head, body, leftArm, rightArm, leftLeg, rightLeg };
-};
-
-//draw the man
-const drawMan = (count) => {
-  let { head, body, leftArm, rightArm, leftLeg, rightLeg } = canvasCreator();
-  switch (count) {
-    case 1:
-      head();
-      break;
-    case 2:
-      body();
-      break;
-    case 3:
-      leftArm();
-      break;
-    case 4:
-      rightArm();
-      break;
-    case 5:
-      leftLeg();
-      break;
-    case 6:
-      rightLeg();
-      break;
-    default:
-      break;
+  // OnClick Function
+   check = function () {
+    list.onclick = function () {
+      var geuss = (this.innerHTML);
+      this.setAttribute("class", "active");
+      this.onclick = null;
+      for (var i = 0; i < word.length; i++) {
+        if (word[i] === geuss) {
+          geusses[i].innerHTML = geuss;
+          counter += 1;
+        } 
+      }
+      var j = (word.indexOf(geuss));
+      if (j === -1) {
+        lives -= 1;
+        comments();
+        animate();
+      } else {
+        comments();
+      }
+    }
   }
-};
+  
+    
+  // Play
+  play = function () {
+    categories = [
+        ["liverpool", "chelsea", "manchester-city", "newcastle-united"],
+        ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
+        ["manchester", "milan", "madrid", "amsterdam", "prague"]
+    ];
 
-//New Game
-newGameButton.addEventListener("click", initializer);
-window.onload = initializer;
+    chosenCategory = categories[Math.floor(Math.random() * categories.length)];
+    word = chosenCategory[Math.floor(Math.random() * chosenCategory.length)];
+    word = word.replace(/\s/g, "-");
+    console.log(word);
+    buttons();
+
+    geusses = [ ];
+    lives = 10;
+    counter = 0;
+    space = 0;
+    result();
+    comments();
+    selectCat();
+    canvas();
+  }
+
+  play();
+  
+  // Hint
+
+    hint.onclick = function() {
+
+      hints = [
+        ["Ulaan chutguruud l baidag?", "Odoo harin tsenher chutguruud?", "2013 FA Cup runners up", "Gazza's first club"],
+        ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"],
+        ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
+    ];
+
+    var catagoryIndex = categories.indexOf(chosenCategory);
+    var hintIndex = chosenCategory.indexOf(word);
+    showClue.innerHTML = "Clue: - " +  hints [catagoryIndex][hintIndex];
+  };
+
+   // Reset
+
+  document.getElementById('reset').onclick = function() {
+    correct.parentNode.removeChild(correct);
+    letters.parentNode.removeChild(letters);
+    showClue.innerHTML = "";
+    context.clearRect(0, 0, 400, 400);
+    play();
+  }
+}
+
+
