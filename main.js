@@ -49,6 +49,7 @@ window.onload = function () {
       catagoryName.innerHTML = "Aldartai hotuud";
     }
   }
+  
 
   // Create geusses ul
    result = function () {
@@ -183,9 +184,9 @@ window.onload = function () {
   // Play
   play = function () {
     categories = [
-        ["liverpool", "chelsea", "manchester-city", "newcastle-united"],
-        ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-        ["manchester", "milan", "madrid", "amsterdam", "prague"]
+        ["liverpool", "chelsea", "manchester-city",],
+        ["alien","gladiator", "finding-nemo"],
+        ["manchester","madrid", "Mongolia", "Seoul"]
     ];
 
     chosenCategory = categories[Math.floor(Math.random() * categories.length)];
@@ -211,9 +212,9 @@ window.onload = function () {
     hint.onclick = function() {
 
       hints = [
-        ["Ulaan chutguruud l baidag?", "Odoo harin tsenher chutguruud?", "2013 FA Cup runners up", "Gazza's first club"],
-        ["Science-Fiction horror film", "1971 American action film", "Historical drama", "Anamated Fish", "Giant great white shark"],
-        ["Northern city in the UK", "Home of AC and Inter", "Spanish capital", "Netherlands capital", "Czech Republic capital"]
+        ["Ulaan chutguruud l baidag?", "Odoo harin tsenher chutguruud?", "2013 FA Cup runners up"],
+        ["Science-Fiction horror film","Historical drama", "Anamated Fish"],
+        ["Northern city in the UK","Spanish capital", "Capital of Mongolia?", "South Korea capital?"]
     ];
 
     var catagoryIndex = categories.indexOf(chosenCategory);
